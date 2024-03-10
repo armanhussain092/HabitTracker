@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>
+            Habit Tracker
+        </h1>
+    </header>
+
+    <main>
+
+        <div class="add-habit-box">
+            
+            <form action="/habits" method="post">
+                <label for="name">Habit Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description">
+           
+                <button type="submit">Add Habit</button>
+            </form>
+        </div>
+
+        <ul>
+            <% habits.forEach(habit => { %>
+                <li class="habit" style="background-color: #084f7b; color:aliceblue">
+                    <div class="habit-content">
+                        <div class="box">
+                            <h3><span style="text-decoration: underline;"><%= habit.name || 'No Name' %></span></h3>
+                            <% if (habit.description) { %>
+                                <p><%= habit.description %></p>
+                            <% } %>
+                        </div>
+                        <div class="habit-days">
+                            <% days.forEach(day => { %>
+                                <div class="habit-day">
+                                    <label>
+                                        <span class="day-label"><%= day %></span>
+                                        <a href="/habits/toggle/<%= habit._id %>/<%= day %>">
+                                            <% if (habit.days[day] === 'completed') { %>
+                                                <span class="green-tick">&#10004;</span>
+                                            <% } else { %>
+                                                <span class="red-cross">&#10008;</span>
+                                            <% } %>
+                                        </a>
+                                    </label>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                    
+                    <form action="/habits/delete/<%= habit._id %>" method="post">
+                        <button type="submit" class="remove-button">Remove</button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
+    </main>
+
+    <script src="/scripts/script.js"></script>
+</body>
+</html>
